@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DashboardScreen, CountdownAlertScreen, LiveMapScreen, IncidentHistoryScreen } from './src/screens';
+import { FakeCallScreen } from './src/screens/FakeCallScreen';
 import { StatusBar, View } from 'react-native';
 import { PermissionSetupScreen } from './src/screens/PermissionSetupScreen';
 import { checkMultiple, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { initHardwareTriggers } from './src/services/HardwareTriggerService';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,6 +14,14 @@ function App(): React.JSX.Element {
   // Start as false — show permission screen by default until we confirm they're all granted
   const [permissionsGranted, setPermissionsGranted] = useState(false);
   const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    // 🛡️ Shadow-Link Hardware Monitor Start
+    const cleanup = initHardwareTriggers();
+    return () => {
+      if (cleanup) cleanup();
+    };
+  }, []);
 
   useEffect(() => {
     checkMultiple([
@@ -69,6 +79,11 @@ function App(): React.JSX.Element {
           options={{ gestureEnabled: false }}
         />
         <Stack.Screen name="IncidentHistory" component={IncidentHistoryScreen} />
+        <Stack.Screen 
+          name="FakeCall" 
+          component={FakeCallScreen} 
+          options={{ animation: 'fade' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

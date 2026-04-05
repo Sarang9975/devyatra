@@ -14,28 +14,46 @@ interface Props {
 
 const REQUIRED_PERMISSIONS = [
     {
+        id: 'mic',
         permission: PERMISSIONS.ANDROID.RECORD_AUDIO,
         icon: '🎙️',
         title: 'Microphone',
         reason: 'Speak voice commands to the AI during emergencies.',
     },
     {
+        id: 'torch',
         permission: PERMISSIONS.ANDROID.CAMERA,
         icon: '🔦',
         title: 'Camera / Flashlight',
         reason: 'Activate the SOS rescue beacon strobe light.',
     },
     {
+        id: 'loc',
         permission: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
         icon: '📍',
         title: 'Location',
         reason: 'Share your GPS coordinates in SOS messages.',
     },
     {
+        id: 'sms',
         permission: PERMISSIONS.ANDROID.SEND_SMS,
         icon: '💬',
         title: 'Send SMS',
         reason: 'Automatically alert your emergency contacts.',
+    },
+    {
+        id: 'call',
+        permission: PERMISSIONS.ANDROID.CALL_PHONE,
+        icon: '📞',
+        title: 'Phone Calls',
+        reason: 'Automatically call emergency contacts or services.',
+    },
+    {
+        id: 'notif',
+        permission: (PERMISSIONS.ANDROID as any).POST_NOTIFICATIONS,
+        icon: '🔔',
+        title: 'Notifications',
+        reason: 'Display critical emergency status and SOS alerts.',
     },
 ];
 
@@ -88,7 +106,7 @@ export const PermissionSetupScreen: React.FC<Props> = ({ onAllGranted }) => {
 
             <View style={styles.permList}>
                 {REQUIRED_PERMISSIONS.map((p) => (
-                    <View key={p.permission} style={styles.permRow}>
+                    <View key={p.id} style={styles.permRow}>
                         <Text style={styles.permIcon}>{p.icon}</Text>
                         <View style={styles.permText}>
                             <Text style={styles.permTitle}>{p.title}</Text>
